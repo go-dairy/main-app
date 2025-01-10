@@ -10,22 +10,16 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      HOST: root@89.22.234.56
-      DEPLOY_DIRECTORY: /root/deploy/github.com/go-dairy/main-app
-      ENV_FILE_PATH: /root/deploy/github.com/go-dairy/main-app/config.env
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: remote docker-compose up via ssh
+        uses: appleboy/ssh-action@v0.1.5
         with:
-          ref: ${{ github.event.inputs.tag }}
-      - name: Check if tag exists
-        run: |
-          git fetch --all --tags
-          if ! git tag | grep -q "^${{ github.event.inputs.tag }}$"; then
-            echo "error: Tag '${{ github.event.inputs.tag }}' not found"
-            exit 1
-          fi
-      - name: Build the stack
-        run: docker-compose up -d
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          port: 22
+          script: |
+            git clone --branch ${{ github.event.inputs.tag }} https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
+            cd ~/.deploy/${{ github.event.repository.name }}
+            docker compose -f ./docker-compose.yml pull
+            docker compose -f ./docker-compose.yml -f up -d
