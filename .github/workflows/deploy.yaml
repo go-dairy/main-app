@@ -12,13 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: remote docker-compose up via ssh
-        uses: appleboy/ssh-action@v0.1.5
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
         with:
           host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USERNAME }}
-          key: ${{ secrets.DEPLOY_KEY }}
+          user: ${{ secrets.DEPLOY_USERNAME }}
+          pass: ${{ secrets.DEPLOY_PASSWORD }}
           port: 22
-          script: |
+          connect_timeout: 10s
+          first_ssh: |
             git clone --branch ${{ github.event.inputs.tag }} https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
             cd ~/.deploy/${{ github.event.repository.name }}
             docker compose -f ./docker-compose.yml pull
