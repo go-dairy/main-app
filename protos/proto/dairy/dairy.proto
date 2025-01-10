@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package dairy;
+
+option go_package = "godairy.grpc.v1;godairyv1";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service Godairy {
+    rpc NewTask (NewTaskRequest) returns (NewTaskResponse) {
+        option (google.api.http) = {
+            post: "/task"
+            body: "*"
+        };
+    };
+    rpc NewDate (DateRequest) returns (DateResponse){
+        option (google.api.http) = {
+            post: "/date"
+            body: "*"
+        };
+    };
+    rpc Date (DateRequest) returns (DateResponse){
+        option (google.api.http) = {
+            get: "/date"
+        };
+    };
+    rpc TasksOfDate (DateRequest) returns (TaskResponse){
+        option (google.api.http) = {
+            get: "/date/{date}"
+        };
+       
+    };
+    rpc Task (TaskRequest) returns (TaskResponse){
+       option (google.api.http) = {
+           get: "/task/{record_uuid}"
+       };
+    };
+    rpc DeleteTask (DeleteTaskRequest) returns (google.protobuf.Empty){
+        option (google.api.http) = {
+            delete: "/task/{record_uuid}"
+        };
+    };
+
+}
+
+message Task {
+    string record_uuid = 1; //ID of database record
+    google.protobuf.Timestamp datetime = 2; //time and date of new task
+    string task = 3; //message of task
+}
+
+message TaskRequest {
+    string record_uuid = 1; //ID of database record
+    google.protobuf.Timestamp datetime = 2; //time and date of new task
+    string task = 3; //message of task
+}
+
+message TaskResponse {
+    repeated Task tasks = 1; //planning tasks
+}
+
+
+message NewTaskRequest {
+    string record_uuid = 1; //ID of database record
+    google.protobuf.Timestamp datetime = 2; //time and date of new task
+    string task = 3; //message of task
+}
+
+message NewTaskResponse {
+    string record_uuid = 1; //ID of database record
+}
+
+message DeleteTaskRequest {
+    string record_uuid = 1; //ID of database record
+}
+
+message DateRequest {
+    string date_uuid = 1; //ID of database record
+    google.protobuf.Timestamp date = 2; //selected date
+}
+
+message DateResponse {
+    string date_uuid = 1; //ID of database record
+    google.protobuf.Timestamp date = 2; //selected date
+}
+

@@ -1,0 +1,6 @@
+version: '3'
+
+tasks:
+  protogen:
+    cmds:
+      - docker build -t protogen ./protos && docker run --volume "$(pwd)/protos:/protos" --workdir /protos protogen generate

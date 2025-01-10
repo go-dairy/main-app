@@ -1,0 +1,22 @@
+services:
+  go-dairy:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "50051:50051"
+    env_file:
+      - config.env
+  
+  postgres:
+    image: postgres:14
+    restart: unless-stopped
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - config.env
+
+volumes:
+  pgdata:
+    driver: local
