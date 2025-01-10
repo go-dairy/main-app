@@ -20,7 +20,8 @@ jobs:
           port: 22
           connect_timeout: 10s
           first_ssh: |
-            git clone --branch ${{ github.event.inputs.tag }} https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
+            git clone https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
             cd ~/.deploy/${{ github.event.repository.name }}
-            docker compose -f ./docker-compose.yml pull
-            docker compose -f ./docker-compose.yml -f up -d
+            git checkout ${{ github.event.inputs.tag }}
+            docker compose -f ./docker-compose.yaml pull
+            docker compose -f ./docker-compose.yaml -f up -d
