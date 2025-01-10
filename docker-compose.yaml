@@ -4,10 +4,10 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
-    ports:
-      - "50051:50051"
     env_file:
       - config.env
+    networks:
+      - go-dairy-network
   
   postgres:
     image: postgres:14
@@ -20,3 +20,7 @@ services:
 volumes:
   pgdata:
     driver: local
+
+networks:
+  go-dairy-network:
+    driver: bridge
