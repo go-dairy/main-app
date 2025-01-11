@@ -17,6 +17,7 @@ jobs:
           first_ssh: |
             docker compose -f ~/.deploy/${{ github.event.repository.name }}/docker-compose.yaml down
             rm -rf ~/.deploy
+          last_ssh: |
             git clone https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
             cd ~/.deploy/${{ github.event.repository.name }}
             docker compose -f ./docker-compose.yaml pull
