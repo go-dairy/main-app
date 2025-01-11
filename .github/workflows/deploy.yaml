@@ -1,11 +1,6 @@
 name: Deploy App
 
-on:
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Tag to deploy'
-        required: true
+on: push
 
 jobs:
   deploy:
@@ -20,9 +15,9 @@ jobs:
           port: 22
           connect_timeout: 10s
           first_ssh: |
+            docker compose -f ~/.deploy/${{ github.event.repository.name }}/docker-compose.yaml down
             rm -rf ~/.deploy
             git clone https://github.com/${{ github.repository }} ~/.deploy/${{ github.event.repository.name }}
             cd ~/.deploy/${{ github.event.repository.name }}
-            git checkout ${{ github.event.inputs.tag }}
             docker compose -f ./docker-compose.yaml pull
             docker compose -f ./docker-compose.yaml up -d
