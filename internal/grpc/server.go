@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/go-dairy/main-app/internal/logger/sl"
-	"github.com/go-dairy/main-app/internal/models"
+	"github.com/go-dairy/main-app/models"
 	godairyv1 "github.com/go-dairy/main-app/protos/gen/go/dairy"
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
