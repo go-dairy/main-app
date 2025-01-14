@@ -44,7 +44,7 @@ func (s *Storage) SaveTask(
 INSERT INTO tasks (
 	dairy_time,
 	dairy_task,
-	date_uuid
+	uuid
 ) VALUES (
 	@dairy_time,
 	@dairy_task,
@@ -75,7 +75,7 @@ func (s *Storage) DeleteTask(
 	const op = "storage.pgsql.DeleteTask"
 	query := `
 DELETE FROM tasks
-WHERE task_uuid = @task_uuid;
+WHERE uuid = @task_uuid;
 `
 
 	args := pgx.NamedArgs{
@@ -95,12 +95,12 @@ func (s *Storage) TaskByUuid(
 	const op = "storage.pgsql.TaskById"
 	query := `
 SELECT 
-	task_uuid,
+	uuid,
 	dairy_time,
 	dairy_task,
 	date_uuid
 FROM tasks
-WHERE task_uuid = @task_uuid;
+WHERE uuid = @task_uuid;
 `
 
 	args := pgx.NamedArgs{
@@ -131,7 +131,7 @@ func (s *Storage) TaskByDateTime(
 
 		query = `
 SELECT 
-	task_uuid,
+	uuid,
 	dairy_time,
 	dairy_task,
 	date_uuid
@@ -146,7 +146,7 @@ WHERE date_uuid = @date_uuid;`
 	if !ttime.IsZero() {
 		query = `
 SELECT 
-	task_uuid,
+	uuid,
 	dairy_time,
 	dairy_task,
 	date_uuid
@@ -181,7 +181,7 @@ func (s *Storage) Date(
 	const op = "storage.pgsql.Date"
 	query := `
 SELECT 
-	date_uuid,
+	uuid,
 	dairy_date
 FROM dates
 WHERE dairy_date = @date;	
