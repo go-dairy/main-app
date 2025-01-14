@@ -13,7 +13,7 @@ services:
     image: postgres:14
     restart: unless-stopped
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - go-dairy-pgdata:/var/lib/postgresql/data
     env_file:
       - config.env
 
