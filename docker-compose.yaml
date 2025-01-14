@@ -18,7 +18,7 @@ services:
       - config.env
 
 volumes:
-  pgdata:
+  go-dairy-pgdata:
     driver: local
 
 networks:
